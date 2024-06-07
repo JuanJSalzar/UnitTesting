@@ -1,10 +1,4 @@
 ﻿using StringManipulation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace StringManipulationTests
 {
@@ -69,6 +63,91 @@ namespace StringManipulationTests
             Assert.NotNull(result);
             Assert.NotEmpty(result);
             Assert.DoesNotContain(" ", result);
+        }
+
+        [Fact]
+        public void QuantintyInWords()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string input  = "casas";
+            const int quantity = 100;
+            
+            // Act
+            var result = stringOperations.QuantintyInWords(input, quantity);
+            
+            // Assert 
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.Contains("casas", result);
+            Assert.StartsWith("cien", result);
+        }
+
+        [Fact]
+        public void GetStringLength_Exception()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => stringOperations.GetStringLength(null));
+            //It's necessary to use a lambda expression to call the method because it's a delegate
+        }
+
+        [Fact]
+        public void GetStringLength()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string str = "Hello World";
+            
+            // Act
+            var result = stringOperations.GetStringLength(str);
+            
+            // Assert
+            Assert.Equal(str.Length, result);
+        }
+
+        [Fact]
+        public void TruncateString_Exception()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string str = "";
+            const int n = 0;
+            
+            // Assert
+            Assert.Throws<ArgumentOutOfRangeException>(() => stringOperations.TruncateString(str, n));
+        }
+
+        [Fact]
+        public void TruncateString_Validation()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string str = "hel";
+            const int n = 5;;
+            
+            // Act
+            var result = stringOperations.TruncateString(str, n);
+            
+            // Assert
+            Assert.Equal(str, result);
+        }
+
+        [Fact]
+        public void TruncatedString()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string str = "Hello World";
+            const int n = 5;
+            
+            // Act
+            var result = stringOperations.TruncateString(str, n);
+            
+            // Assert
+            Assert.Equal("Hello", result);
         }
     }
 }
