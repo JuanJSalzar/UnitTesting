@@ -54,5 +54,21 @@ namespace StringManipulationTests
             // Assert
             Assert.False(result);
         }
+
+        [Fact]
+        public void RemoveWhiteSpace()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            const string identification = "                  10 20 10 24 11";
+            
+            // Act
+            var result = stringOperations.RemoveWhitespace(identification);
+            
+            // Assert 
+            Assert.NotNull(result);
+            Assert.NotEmpty(result);
+            Assert.DoesNotContain(" ", result);
+        }
     }
 }
