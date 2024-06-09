@@ -119,20 +119,20 @@ namespace StringManipulationTests
             // Assert
             Assert.Throws<ArgumentOutOfRangeException>(() => stringOperations.TruncateString(str, n));
         }
-
-        [Fact]
-        public void TruncateString_Validation()
+        
+        [Theory]
+        [InlineData("Hel", 5, "Hel")]
+        [InlineData("", 5, "")]
+        public void TruncateString_Validation(string str, int n, string expected)
         {
             // Arrange
             var stringOperations = new StringOperations();
-            const string str = "hel";
-            const int n = 5;;
             
             // Act
             var result = stringOperations.TruncateString(str, n);
             
             // Assert
-            Assert.Equal(str, result);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -149,5 +149,22 @@ namespace StringManipulationTests
             // Assert
             Assert.Equal("Hello", result);
         }
+
+        [Theory]
+        [InlineData("MMXVIII", 2018)]
+        [InlineData("MMXXI", 2021)]
+        [InlineData("MMMCCL", 3250)]
+        public void FromRomanToNumber(string str, int expected )
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            
+            // Act
+            var result = stringOperations.FromRomanToNumber(str);
+            
+            // Assert
+            Assert.Equal(expected, result);;
+        }
     }
 }
+
