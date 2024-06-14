@@ -6,7 +6,7 @@ namespace StringManipulationTests
 {
     public class StringsOperationsTest
     {
-        [Fact(Skip = "I'm skipping this test because i'm testing Skip. TODO later")]
+        [Fact]//(Skip = "I'm skipping this test because i'm testing Skip. )
         public void ConcatenateStrings()
         {
             // Arrange
@@ -23,6 +23,22 @@ namespace StringManipulationTests
             Assert.Equal("Hello World", result);
         }
 
+        [Theory]
+        [InlineData("Hello", "olleH")]
+        [InlineData("", "")]
+        [InlineData("anitalavalatina", "anitalavalatina")]
+        public void ReverseString(string str, string expected)
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            
+            // Act
+            string result = stringOperations.ReverseString(str);
+            
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expected, result);
+        }
         [Fact]
         public void IsPalindrome_True()
         {
@@ -68,14 +84,34 @@ namespace StringManipulationTests
         }
 
         [Theory]
-        [InlineData("casas", 100, "cien casas")]
+        [InlineData ("city", "cities")]
+        [InlineData ("house", "houses")]
+        [InlineData ("dog", "dogs")]
+        [InlineData ("", "")]
+        public void Pluralize(string input, string expected)
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+            
+            // Act
+            var result = stringOperations.Pluralize(input);
+            
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData("houses", 100, "one hundred houses")]
+        [InlineData("schools", 50, "fifty schools")]
         public void QuantintyInWords(string input, int quantity, string expected)
         {
             // Arrange
             var stringOperations = new StringOperations();
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-ES");
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("es-ES");
-            
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             // Act
             var result = stringOperations.QuantintyInWords(input, quantity);
             
@@ -193,6 +229,17 @@ namespace StringManipulationTests
             
             //Act
             var result = stringOperations.ReadFile(mockFileReader.Object, "information.txt");
+        }
+        [Fact]
+        public void ReadFile_WhenFileDoesNotExist_ThrowsFileNotFoundException()
+        {
+            // Arrange
+            var stringOperations = new StringOperations();
+            var mockFileReader = new Mock<IFileReaderConector>();
+            mockFileReader.Setup(p => p.ReadString(It.IsAny<string>())).Throws<FileNotFoundException>();
+
+            // Assert
+            Assert.Throws<FileNotFoundException>(() => stringOperations.ReadFile(mockFileReader.Object, "nonExistingFile.txt"));
         }
     }
 }
