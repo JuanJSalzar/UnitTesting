@@ -1,4 +1,6 @@
-﻿using StringManipulation;
+﻿using Microsoft.Extensions.Logging;
+using Moq;
+using StringManipulation;
 
 namespace StringManipulationTests
 {
@@ -164,6 +166,32 @@ namespace StringManipulationTests
             
             // Assert
             Assert.Equal(expected, result);;
+        }
+
+        [Fact]
+        public void CountOccurrences()
+        {
+            //Arrange
+            var mock = new Mock<ILogger<StringOperations>>(); //Mocking ILogger
+            var stringOperations = new StringOperations(mock.Object); //Injecting ILogger
+            
+            //Act
+            var result = stringOperations.CountOccurrences("Hello World", 'o');
+            
+            //Assert
+            Assert.Equal(2, result);
+        }
+
+        [Fact]
+        public void ReadFile()
+        {
+            //Arrange
+            var stringOperations = new StringOperations();
+            var mockFileReader = new Mock<IFileReaderConector>(); // Creating a mock of IFileReaderConector
+            mockFileReader.Setup(p => p.ReadString(It.IsAny<string>())).Returns("Reading file"); // Setting up the mock
+            
+            //Act
+            var result = stringOperations.ReadFile(mockFileReader.Object, "information.txt");
         }
     }
 }
