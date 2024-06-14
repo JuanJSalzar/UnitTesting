@@ -67,13 +67,14 @@ namespace StringManipulationTests
             Assert.DoesNotContain(" ", result);
         }
 
-        [Fact]
-        public void QuantintyInWords()
+        [Theory]
+        [InlineData("casas", 100, "cien casas")]
+        public void QuantintyInWords(string input, int quantity, string expected)
         {
             // Arrange
             var stringOperations = new StringOperations();
-            const string input  = "casas";
-            const int quantity = 100;
+            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("es-ES");
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("es-ES");
             
             // Act
             var result = stringOperations.QuantintyInWords(input, quantity);
@@ -81,8 +82,8 @@ namespace StringManipulationTests
             // Assert 
             Assert.NotNull(result);
             Assert.NotEmpty(result);
-            Assert.Contains("casas", result);
-            Assert.StartsWith("cien", result);
+            Assert.Equal(expected, result);
+            
         }
 
         [Fact]
